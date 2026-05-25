@@ -927,6 +927,165 @@ nav {
   line-height: 1.6;
   letter-spacing: 1px;
 }
+/* ═══════════════════════════════════════
+   BADGES / MEDALLAS
+═══════════════════════════════════════ */
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: clamp(.6rem, 2vw, 1.4rem);
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.badge-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .55rem;
+  position: relative;
+}
+
+.badge-img-wrap {
+  width: 100%;
+  aspect-ratio: 1;
+  position: relative;
+  border-radius: 50%;
+  transition: transform .35s cubic-bezier(.23,1,.32,1), box-shadow .35s;
+}
+
+/* State: locked (default) */
+.badge-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: filter .4s ease, opacity .4s ease;
+  filter: grayscale(1) brightness(0.12) contrast(1.2);
+  opacity: 0.55;
+}
+
+/* State: unlocked */
+.badge-item.unlocked .badge-img-wrap img {
+  filter: none;
+  opacity: 1;
+}
+
+/* Glow ring when unlocked */
+.badge-item.unlocked .badge-img-wrap {
+  box-shadow:
+    0 0 18px rgba(0,245,255,.5),
+    0 0 40px rgba(0,245,255,.2),
+    0 0 70px rgba(155,0,255,.15);
+}
+.badge-item.unlocked .badge-img-wrap::after {
+  content: '';
+  position: absolute; inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0,245,255,.55);
+  box-shadow: 0 0 14px rgba(0,245,255,.4);
+  pointer-events: none;
+  animation: badge-ring-pulse 2.5s ease-in-out infinite;
+}
+@keyframes badge-ring-pulse {
+  0%,100% { opacity: .8; transform: scale(1); }
+  50%      { opacity: .35; transform: scale(1.07); }
+}
+
+/* Hover: always shows a hint */
+.badge-item:not(.unlocked):hover .badge-img-wrap img {
+  filter: grayscale(1) brightness(0.22) contrast(1.2);
+  opacity: 0.7;
+}
+.badge-item.unlocked:hover .badge-img-wrap {
+  transform: scale(1.1) rotate(-2deg);
+}
+
+/* Checkmark pulse when unlocking */
+@keyframes badge-pop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  60%  { transform: scale(1.18); opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+.badge-item.pop .badge-img-wrap img { animation: badge-pop .45s cubic-bezier(.23,1,.32,1) both; }
+
+/* Label */
+.badge-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(.32rem, .9vw, .48rem);
+  letter-spacing: 1.5px;
+  text-align: center;
+  color: rgba(255,255,255,.22);
+  transition: color .3s;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+.badge-item.unlocked .badge-name {
+  color: var(--cyan);
+  text-shadow: 0 0 10px rgba(0,245,255,.5);
+}
+
+/* Lock icon overlay on locked badges */
+.badge-lock {
+  position: absolute;
+  bottom: -2px; right: -2px;
+  width: clamp(12px, 2.5vw, 20px);
+  height: clamp(12px, 2.5vw, 20px);
+  background: rgba(2,4,8,.9);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(.35rem, .8vw, .5rem);
+  color: rgba(255,255,255,.3);
+  transition: opacity .3s;
+  pointer-events: none;
+}
+.badge-item.unlocked .badge-lock { opacity: 0; }
+
+/* Progress bar */
+.badges-progress {
+  margin-top: clamp(1rem, 2.5vw, 1.75rem);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.badges-progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,.07);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+.badges-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  box-shadow: 0 0 12px rgba(0,245,255,.5);
+  border-radius: 2px;
+  transition: width .6s cubic-bezier(.23,1,.32,1);
+  width: 0%;
+}
+.badges-progress-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(.4rem, 1vw, .55rem);
+  letter-spacing: 2px;
+  color: rgba(255,255,255,.35);
+  white-space: nowrap;
+  transition: color .3s;
+}
+.badges-progress-label span {
+  color: var(--cyan);
+  text-shadow: 0 0 10px rgba(0,245,255,.5);
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .badges-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 400px) {
+  .badges-grid { grid-template-columns: repeat(4, 1fr); gap: .5rem; }
+}
 
 /* ═══════════════════════════════════════
    FOOTER
@@ -1053,6 +1212,7 @@ section, footer, nav { max-width: 100vw; }
     <li><a href="#featured">Último EP</a></li>
     <li><a href="#lives-section">Vidas</a></li>
     <li><a href="#rules">Reglas</a></li>
+	<li><a href="platino.html">Platino</a></li>
     <li><a href="https://www.youtube.com/channel/UCo6ypuutg-DhPT6CvkTjJ7g" target="_blank" rel="noopener">YouTube ↗</a></li>
   </ul>
 
@@ -1080,15 +1240,13 @@ section, footer, nav { max-width: 100vw; }
   <div class="corner corner-br"></div>
 
   <div class="hero-content">
-    <div class="hero-eyebrow">◈ TEMPORADA 01 · EN CURSO ◈</div>
-    <h1 class="hero-title">
-      <span class="hero-title-main" data-text="INSANE">INSANE</span>
-      <span class="hero-title-main" data-text="LOCKE">LOCKE</span>
-    </h1>
+    <div class="hero-eyebrow">◈ EN CURSO ◈</div>
+<img src="Logo.png" alt="Pokémon Zafiro Alpha Insanelocke"
+  style="width: clamp(260px, 50vw, 520px); margin-bottom: 1.5rem; filter: drop-shadow(0 0 30px rgba(0,245,255,0.4)) drop-shadow(0 0 60px rgba(155,0,255,0.3)); animation: fade-in-up 1s ease both;">
     <p class="hero-subtitle">20 VIDAS · TODO ES RANDOM</p>
     <div class="lives-bar" id="heroLivesBar"></div>
     <div class="hero-cta">
-      <a href="#featured" class="btn-primary"><i class="fa-solid fa-play"></i> VER ÚLTIMO EPISODIO</a>
+      <a href="#featured" class="btn-primary"><i class="fa-solid fa-play"></i> VER TRAILER</a>
       <a href="#carousel-section" class="btn-secondary"><i class="fa-solid fa-list"></i> TODOS LOS EP</a>
     </div>
   </div>
@@ -1110,21 +1268,21 @@ section, footer, nav { max-width: 100vw; }
         Actualiza también el ep-badge y el ep-title.
       -->
       <iframe
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1&color=white"
+        src="https://youtu.be/cT12CuoTWQo"
         title="INSANELOCKE EP01"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
       ></iframe>
       <div class="video-overlay"></div>
       <div class="video-info">
-        <div class="ep-badge">EP 01 · NUEVA VIDA</div>
-        <div class="ep-title">EL COMIENZO DEL FIN</div>
+        <div class="ep-badge">EP 00 · TRAILER</div>
+        <div class="ep-title">¡EL CAOS ABSOLUTO HA LLEGADO! 🎲 | Pokémon Insanelocke (Tráiler)</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ EPISODES CAROUSEL ═══ -->
+<!-- ═══ EPISODES CAROUSEL ═══  
 <section id="carousel-section">
   <div class="carousel-header">
     <div class="section-label reveal">TODOS LOS EPISODIOS</div>
@@ -1140,11 +1298,112 @@ section, footer, nav { max-width: 100vw; }
   <div class="carousel-dots" id="carouselDots"></div>
 </section>
 
+-->
+
+<!-- ═══ BADGES / MEDALLAS ═══ -->
+<section id="badges-section">
+  <div class="section-wrap constrained">
+    <div class="section-label reveal">PROGRESO DE MEDALLAS</div>
+    <h2 class="section-title reveal">LIGA <span style="color:var(--cyan)">HOENN</span></h2>
+
+    <!--
+      ════════════════════════════════════════════════
+      CÓMO ACTUALIZAR MEDALLAS
+      ════════════════════════════════════════════════
+      ► Medalla BLOQUEADA (no obtenida):
+          <div class="badge-item">
+
+      ► Medalla OBTENIDA:
+          <div class="badge-item unlocked">
+
+      Solo añade o quita la clase "unlocked".
+      ════════════════════════════════════════════════
+    -->
+    <div class="badges-grid reveal" id="badgesGrid">
+
+      <div class="badge-item">
+        <div class="badge-img-wrap">
+          <img src="1_Stone_Badge.png" alt="Stone Badge" draggable="false">
+          <div class="badge-lock"><i class="fa-solid fa-lock"></i></div>
+        </div>
+        <div class="badge-name">Piedra</div>
+      </div>
+
+      <div class="badge-item">
+        <div class="badge-img-wrap">
+          <img src="2_Knuckle_Badge.png" alt="Knuckle Badge" draggable="false">
+          <div class="badge-lock"><i class="fa-solid fa-lock"></i></div>
+        </div>
+        <div class="badge-name">Puño</div>
+      </div>
+
+      <div class="badge-item">
+        <div class="badge-img-wrap">
+          <img src="3_Dynamo_Badge.png" alt="Dynamo Badge" draggable="false">
+          <div class="badge-lock"><i class="fa-solid fa-lock"></i></div>
+        </div>
+        <div class="badge-name">Dinamo</div>
+      </div>
+
+      <div class="badge-item">
+        <div class="badge-img-wrap">
+          <img src="4_Heat_Badge.png" alt="Heat Badge" draggable="false">
+          <div class="badge-lock"><i class="fa-solid fa-lock"></i></div>
+        </div>
+        <div class="badge-name">Calor</div>
+      </div>
+
+      <div class="badge-item">
+        <div class="badge-img-wrap">
+          <img src="5_Balance_Badge.png" alt="Balance Badge" draggable="false">
+          <div class="badge-lock"><i class="fa-solid fa-lock"></i></div>
+        </div>
+        <div class="badge-name">Equilibrio</div>
+      </div>
+
+      <div class="badge-item">
+        <div class="badge-img-wrap">
+          <img src="6_Feather_Badge.png" alt="Feather Badge" draggable="false">
+          <div class="badge-lock"><i class="fa-solid fa-lock"></i></div>
+        </div>
+        <div class="badge-name">Pluma</div>
+      </div>
+
+      <div class="badge-item">
+        <div class="badge-img-wrap">
+          <img src="7_Mind_Badge.png" alt="Mind Badge" draggable="false">
+          <div class="badge-lock"><i class="fa-solid fa-lock"></i></div>
+        </div>
+        <div class="badge-name">Mente</div>
+      </div>
+
+      <div class="badge-item">
+        <div class="badge-img-wrap">
+          <img src="8_Rain_Badge.png" alt="Rain Badge" draggable="false">
+          <div class="badge-lock"><i class="fa-solid fa-lock"></i></div>
+        </div>
+        <div class="badge-name">Lluvia</div>
+      </div>
+
+    </div>
+
+    <div class="badges-progress reveal">
+      <div class="badges-progress-bar">
+        <div class="badges-progress-fill" id="badgesProgressFill"></div>
+      </div>
+      <div class="badges-progress-label" id="badgesProgressLabel"><span>0</span> / 8 MEDALLAS</div>
+    </div>
+
+    <p style="font-family:'Share Tech Mono',monospace;font-size:clamp(.55rem,1.2vw,.65rem);color:rgba(255,255,255,.2);margin-top:.75rem;letter-spacing:1px;">
+    
+    </p>
+  </div>
+</section>
 <!-- ═══ LIVES TIMELINE ═══ -->
 <section id="lives-section">
   <div class="section-wrap constrained">
     <div class="section-label reveal">SISTEMA DE VIDAS</div>
-    <h2 class="section-title reveal">TIMELINE <span style="color:var(--red)">20 VIDAS</span></h2>
+    <h2 class="section-title reveal">QUEDAN <span style="color:var(--red)">20 VIDAS</span></h2>
     <div class="lives-grid" id="livesGrid"></div>
   </div>
 </section>
@@ -1289,7 +1548,7 @@ section, footer, nav { max-width: 100vw; }
     <a href="https://www.tiktok.com/@soymrdrakon" target="_blank" rel="noopener" class="social-link"><i class="fa-brands fa-tiktok"></i> TIKTOK</a>
   </div>
   <div class="footer-phrase">"Nadie sobrevive al random…"</div>
-  <p class="footer-copy">© 2024 INSANELOCKE · TODOS LOS DERECHOS RESERVADOS · EL CAOS NO TIENE REGLAS</p>
+  <p class="footer-copy">© 2026 INSANELOCKE · TODOS LOS DERECHOS RESERVADOS · EL CAOS NO TIENE REGLAS</p>
 </footer>
 
 <script>
@@ -1298,8 +1557,7 @@ section, footer, nav { max-width: 100vw; }
    ══════════════════════════════════════════════════════
    Para añadir un nuevo episodio, agrega un objeto al
    array siguiendo la misma estructura.
-   ══════════════════════════════════════════════════════ */
-const EPISODES = [
+  const EPISODES = [
   { ep:'01', title:'El Comienzo del Fin',   deaths:1, boss:'Hydra Rex',     duration:'38:22', fa:'fa-dragon',               color:'#9b00ff', ytId:'dQw4w9WgXcQ' },
   { ep:'02', title:'Traici\u00f3n en el Vac\u00edo', deaths:0, boss:'Shadow Lord',  duration:'42:10', fa:'fa-user-secret',           color:'#ff0033', ytId:'dQw4w9WgXcQ' },
   { ep:'03', title:'Ca\u00edda Libre',           deaths:2, boss:'Storm Giant',   duration:'55:44', fa:'fa-bolt',                  color:'#00f5ff', ytId:'dQw4w9WgXcQ' },
@@ -1308,6 +1566,10 @@ const EPISODES = [
   { ep:'06', title:'Modo Espejo',           deaths:0, boss:'Mirror Boss',   duration:'44:55', fa:'fa-circle-half-stroke',    color:'#00f5ff', ytId:'dQw4w9WgXcQ' },
   { ep:'07', title:'Bomba de Tiempo',       deaths:2, boss:'Tempus Rex',    duration:'37:18', fa:'fa-bomb',                  color:'#ff0033', ytId:'dQw4w9WgXcQ' },
   { ep:'08', title:'La \u00daltima Oportunidad', deaths:3, boss:'???',      duration:'72:01', fa:'fa-triangle-exclamation',  color:'#9b00ff', ytId:'dQw4w9WgXcQ' },
+];
+   ══════════════════════════════════════════════════════ */
+const EPISODES = [
+ 
 ];
 
 /* ══════════════════════════════════════════════════════
@@ -1434,7 +1696,7 @@ document.addEventListener('click', (e) => {
 /* ══════════════════════════════════════════════════════
    HERO LIVES BAR
 ══════════════════════════════════════════════════════ */
-const LIVES_ALIVE = 15;
+const LIVES_ALIVE = 20;
 const heroLivesBar = document.getElementById('heroLivesBar');
 for (let i = 0; i < 20; i++) {
   const span = document.createElement('span');
@@ -1471,11 +1733,15 @@ for (let i = 1; i <= 20; i++) {
      ≥ 900px  → 3 visible cards
      540–899px → 2 visible cards
      < 540px  → 1 visible card (full width)
-══════════════════════════════════════════════════════ */
+	 
+	 DESCOMENTAR ESTO CUANDO SALGA EL EP1
+══════════════════════════════════════════════════════ 
 const track   = document.getElementById('carouselTrack');
 const dotsEl  = document.getElementById('carouselDots');
 const btnPrev = document.getElementById('carouselPrev');
 const btnNext = document.getElementById('carouselNext');
+
+
 
 // ── Build cards ──────────────────────────────────────
 EPISODES.forEach((ep, idx) => {
@@ -1658,8 +1924,7 @@ window.addEventListener('resize', () => {
 // ── Init ─────────────────────────────────────────────
 setCardWidths();
 updateDots();
-
-
+*/
 /* ══════════════════════════════════════════════════════
    INJECT FA ICON INTO CRITICAL RULES
 ══════════════════════════════════════════════════════ */
@@ -1671,8 +1936,27 @@ document.querySelectorAll('.rule-item.rule-critical').forEach(li => {
 
 
 /* ══════════════════════════════════════════════════════
-   SCROLL REVEAL
+   BADGES / MEDALLAS
+   ── Para marcar una medalla como obtenida, añade
+      la clase "unlocked" al <div class="badge-item">
+      correspondiente en el HTML. Ej:
+      <div class="badge-item unlocked">
 ══════════════════════════════════════════════════════ */
+(function () {
+  const badgesGrid = document.getElementById('badgesGrid');
+  const progressFill  = document.getElementById('badgesProgressFill');
+  const progressLabel = document.getElementById('badgesProgressLabel');
+
+  const total    = badgesGrid.querySelectorAll('.badge-item').length;
+  const obtained = badgesGrid.querySelectorAll('.badge-item.unlocked').length;
+  const pct      = total ? (obtained / total) * 100 : 0;
+
+  progressFill.style.width = pct + '%';
+  progressLabel.innerHTML  = `<span>${obtained}</span> / ${total} MEDALLAS`;
+})();
+
+
+
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.08 });
@@ -1690,6 +1974,8 @@ function randomGlitch() {
   setTimeout(() => { t.style.filter = ''; t.style.transform = ''; }, 70);
 }
 setInterval(randomGlitch, 3500 + Math.random() * 4000);
+
+
 
 /* ══════════════════════════════════════════════════════
    CURSOR TRAIL (desktop only)
@@ -1709,6 +1995,8 @@ if (!isMobile()) {
     });
   });
 }
+
+
 </script>
 
 </body>
